@@ -17,7 +17,6 @@ import ProfileList from './components/ProfileList';
 export default function App() {
   // État d'inscription
   const [isRegistered, setIsRegistered] = useState(false);
-  const [prenom, setPrenom] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,11 +43,6 @@ export default function App() {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-
-    if (!prenom.trim()) {
-      setError('Veuillez saisir votre prénom.');
-      return;
-    }
 
     setIsLoading(true);
     // Simulation d'un chiffrement/sauvegarde rapide et pro
@@ -85,26 +79,6 @@ export default function App() {
 
             {/* Formulaire */}
             <form onSubmit={handleRegister} className="space-y-5">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="prenom">
-                  Prénom
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
-                    <User size={16} />
-                  </span>
-                  <input
-                    id="prenom"
-                    type="text"
-                    placeholder="Ex: David"
-                    value={prenom}
-                    onChange={(e) => setPrenom(e.target.value)}
-                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-4 text-sm font-semibold transition-all outline-none"
-                    required
-                  />
-                </div>
-              </div>
-
               {error && (
                 <p className="text-xs font-bold text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5">
                   {error}
