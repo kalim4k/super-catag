@@ -74,16 +74,11 @@ export default function App() {
           <div className="relative z-10 space-y-8">
             {/* Logo */}
             <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-neutral-100 shrink-0">
-                <img 
-                  src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/3340b211-1220-4497-89c3-b35692ab3caf.jpg" 
-                  alt="Logo Espace Bizi" 
-                  className="w-full h-full object-cover object-top"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-blue-600/20">
+                CP
               </div>
               <div className="space-y-1">
-                <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">Espace Bizi</h1>
+                <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">Catalogue Privé</h1>
               </div>
             </div>
 
@@ -185,9 +180,9 @@ export default function App() {
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-blue-600/20">
-              EB
+              CP
             </div>
-            <span className="font-extrabold text-neutral-900 tracking-tight text-sm">ESPACE BIZI</span>
+            <span className="font-extrabold text-neutral-900 tracking-tight text-sm">CATALOGUE PRIVÉ</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -243,7 +238,7 @@ export default function App() {
         {/* Moyens de paiement badges */}
         <div className="pt-2 flex justify-center">
           <img 
-            src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/a54a78c4-d777-45cb-939a-69ce5e28e28c.png" 
+            src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/ae3899c2-668a-425b-a007-08511a676036.png" 
             alt="Moyens de paiement sécurisés" 
             className="max-w-xs w-full h-auto object-contain"
             referrerPolicy="no-referrer"
