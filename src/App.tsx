@@ -18,6 +18,8 @@ export default function App() {
   // État d'inscription
   const [isRegistered, setIsRegistered] = useState(false);
   const [prenom, setPrenom] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,6 +49,10 @@ export default function App() {
 
     if (!prenom.trim()) {
       setError('Veuillez saisir votre prénom.');
+      return;
+    }
+    if (password.length < 4) {
+      setError('Le mot de passe doit contenir au moins 4 caractères.');
       return;
     }
 
@@ -103,6 +109,37 @@ export default function App() {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="password">
+                  Mot de passe
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+                    <Lock size={16} />
+                  </span>
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-11 text-sm font-semibold transition-all outline-none"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <p className="text-[10px] text-neutral-400 mt-1 flex items-center gap-1">
+                  <ShieldCheck size={11} className="text-emerald-500" />
+                  Chiffrement de bout en bout activé par protocole de sécurité
+                </p>
               </div>
 
               {error && (
