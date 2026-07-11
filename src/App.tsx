@@ -243,7 +243,7 @@ export default function App() {
         {/* Moyens de paiement badges */}
         <div className="pt-2 flex justify-center">
           <img 
-            src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/ae3899c2-668a-425b-a007-08511a676036.png" 
+            src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/a54a78c4-d777-45cb-939a-69ce5e28e28c.png" 
             alt="Moyens de paiement sécurisés" 
             className="max-w-xs w-full h-auto object-contain"
             referrerPolicy="no-referrer"
