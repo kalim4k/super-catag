@@ -1,0 +1,6 @@
+{
+  "name": "Catalogue Privé",
+  "description": "Un catalogue privé de profils réels, vérifiés et disponibles avec contacts directs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
