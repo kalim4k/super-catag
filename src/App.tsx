@@ -18,6 +18,8 @@ export default function App() {
   // État d'inscription
   const [isRegistered, setIsRegistered] = useState(false);
   const [prenom, setPrenom] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,6 +51,10 @@ export default function App() {
       setError('Veuillez saisir votre prénom.');
       return;
     }
+    if (password.length < 4) {
+      setError('Le mot de passe doit contenir au moins 4 caractères.');
+      return;
+    }
 
     setIsLoading(true);
     // Simulation d'un chiffrement/sauvegarde rapide et pro
@@ -68,16 +74,11 @@ export default function App() {
           <div className="relative z-10 space-y-8">
             {/* Logo */}
             <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-neutral-100 shrink-0">
-                <img 
-                  src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/3340b211-1220-4497-89c3-b35692ab3caf.jpg" 
-                  alt="Logo Espace Bizi" 
-                  className="w-full h-full object-cover object-top"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-blue-600/20">
+                CP
               </div>
               <div className="space-y-1">
-                <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">Espace Bizi</h1>
+                <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">Catalogue Privé</h1>
               </div>
             </div>
 
@@ -103,6 +104,37 @@ export default function App() {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="password">
+                  Mot de passe
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+                    <Lock size={16} />
+                  </span>
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-11 text-sm font-semibold transition-all outline-none"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <p className="text-[10px] text-neutral-400 mt-1 flex items-center gap-1">
+                  <ShieldCheck size={11} className="text-emerald-500" />
+                  Chiffrement de bout en bout activé par protocole de sécurité
+                </p>
               </div>
 
               {error && (
@@ -148,9 +180,9 @@ export default function App() {
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-extrabold text-xs shadow-sm shadow-blue-600/20">
-              EB
+              CP
             </div>
-            <span className="font-extrabold text-neutral-900 tracking-tight text-sm">ESPACE BIZI</span>
+            <span className="font-extrabold text-neutral-900 tracking-tight text-sm">CATALOGUE PRIVÉ</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -206,7 +238,7 @@ export default function App() {
         {/* Moyens de paiement badges */}
         <div className="pt-2 flex justify-center">
           <img 
-            src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/a54a78c4-d777-45cb-939a-69ce5e28e28c.png" 
+            src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/ae3899c2-668a-425b-a007-08511a676036.png" 
             alt="Moyens de paiement sécurisés" 
             className="max-w-xs w-full h-auto object-contain"
             referrerPolicy="no-referrer"
