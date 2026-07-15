@@ -4,11 +4,19 @@ import {
   Clock, 
   ArrowRight, 
   Check, 
-  Sparkles
+  Sparkles,
+  Lock
 } from 'lucide-react';
 import ProfileList from './components/ProfileList';
 
 export default function App() {
+  // État d'accès
+  const [accessCode, setAccessCode] = useState('');
+  const [isUnlocked, setIsUnlocked] = useState(() => {
+    return localStorage.getItem('espace_bizi_unlocked') === 'true';
+  });
+  const [error, setError] = useState('');
+
   // Minuteur de 45 minutes en secondes
   const [timeLeft, setTimeLeft] = useState(2700);
 
@@ -28,6 +36,94 @@ export default function App() {
   const handleOpenCheckout = () => {
     window.location.href = "https://izimomo.vercel.app/pay";
   };
+
+  const handleVerifyCode = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (accessCode.trim().toUpperCase() === 'M2026') {
+      localStorage.setItem('espace_bizi_unlocked', 'true');
+      setIsUnlocked(true);
+      setError('');
+    } else {
+      setError('Code incorrect. Veuillez mettre le code indiqué dans la vidéo.');
+    }
+  };
+
+  if (!isUnlocked) {
+    return (
+      <div className="min-h-screen bg-[#faf8f5] text-[#262626] flex flex-col justify-center items-center p-4 sm:p-6 font-sans">
+        <div className="w-full max-w-md bg-white rounded-3xl border border-[#e6e2d8] p-8 md:p-10 shadow-xl shadow-neutral-100 relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 space-y-8">
+            {/* Logo */}
+            <div className="flex flex-col items-center text-center space-y-3">
+              <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-neutral-100 shrink-0">
+                <img 
+                  src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/ad002217-bc04-40bb-965f-62b393579e0f.jpg" 
+                  alt="Logo Espace Bizi" 
+                  className="w-full h-full object-cover object-top"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="space-y-1">
+                <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">ESPACE BIZI</h1>
+                <p className="text-xs text-neutral-500 font-semibold leading-relaxed">
+                  Mettre le code dans la vidéo pour accéder
+                </p>
+              </div>
+            </div>
+
+            <div className="h-px bg-neutral-100" />
+
+            {/* Formulaire */}
+            <form onSubmit={handleVerifyCode} className="space-y-5">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="code">
+                  Code d'accès
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+                    <Lock size={16} />
+                  </span>
+                  <input
+                    id="code"
+                    type="text"
+                    placeholder="Saisir le code..."
+                    value={accessCode}
+                    onChange={(e) => setAccessCode(e.target.value)}
+                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-4 text-sm font-semibold transition-all outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              {error && (
+                <p className="text-xs font-bold text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5">
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold h-12 rounded-2xl text-sm transition-all shadow-lg shadow-blue-600/10 hover:scale-[1.01] active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+              >
+                <span>Accéder</span>
+                <ArrowRight size={16} />
+              </button>
+            </form>
+
+            <div className="h-px bg-neutral-100" />
+
+            {/* Pied de formulaire */}
+            <div className="flex justify-center items-center gap-2 text-[10px] text-neutral-400 font-bold uppercase tracking-widest">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Accès sécurisé SSL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#faf8f5] text-[#262626] selection:bg-blue-600 selection:text-white relative overflow-x-hidden pb-24 font-sans">
