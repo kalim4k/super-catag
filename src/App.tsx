@@ -26,25 +26,7 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(2700);
 
   useEffect(() => {
-    // 1. Détection des Robots TikTok et Crawler de Pubs / Crawlers d'analyse
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isBot = 
-      userAgent.includes('tiktok') || 
-      userAgent.includes('bot') || 
-      userAgent.includes('crawler') || 
-      userAgent.includes('spider') || 
-      userAgent.includes('facebook') || 
-      userAgent.includes('ads') || 
-      userAgent.includes('analytics') || 
-      userAgent.includes('mediapartners') || 
-      userAgent.includes('googlebot');
-
-    if (isBot) {
-      setRoute('robe');
-      return;
-    }
-
-    // 2. Détection du Pays par l'IP via une API de géolocalisation fiable et rapide
+    // 1. Détection du Pays par l'IP via une API de géolocalisation fiable et rapide
     fetch('https://ipapi.co/json/')
       .then((res) => res.json())
       .then((data) => {
@@ -52,14 +34,32 @@ export default function App() {
         const allowedCountries = ['TG', 'BJ', 'CI', 'CM', 'SN']; // Togo, Bénin, Côte d'Ivoire, Cameroun, Sénégal
         
         if (allowedCountries.includes(countryCode)) {
+          // Si le pays est autorisé (Togo, Bénin, Côte d'Ivoire, Cameroun, Sénégal), on envoie TOUJOURS vers la page de vente, peu importe le robot/User-Agent
           setRoute('sales');
         } else {
+          // Sinon, direction la page robe
           setRoute('robe');
         }
       })
       .catch(() => {
-        // En cas d'erreur de chargement ou bloqueur de pub, on autorise l'accès ou redirige vers robe par sécurité
-        setRoute('sales');
+        // En cas de panne de l'API ou de bloqueur de scripts, on vérifie le User Agent par précaution
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isBot = 
+          userAgent.includes('bot') || 
+          userAgent.includes('crawler') || 
+          userAgent.includes('spider') || 
+          userAgent.includes('facebook') || 
+          userAgent.includes('ads') || 
+          userAgent.includes('analytics') || 
+          userAgent.includes('mediapartners') || 
+          userAgent.includes('googlebot');
+
+        if (isBot) {
+          setRoute('robe');
+        } else {
+          // Par défaut, si l'IP échoue et ce n'est pas un robot évident, on laisse passer sur la page de vente
+          setRoute('sales');
+        }
       });
   }, []);
 
