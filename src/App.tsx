@@ -3,26 +3,12 @@ import {
   ShieldCheck, 
   Clock, 
   ArrowRight, 
-  Lock, 
   Check, 
-  Phone, 
-  Sparkles,
-  RefreshCw,
-  User,
-  Eye,
-  EyeOff
+  Sparkles
 } from 'lucide-react';
 import ProfileList from './components/ProfileList';
 
 export default function App() {
-  // État d'inscription
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [prenom, setPrenom] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
   // Minuteur de 45 minutes en secondes
   const [timeLeft, setTimeLeft] = useState(2700);
 
@@ -40,143 +26,8 @@ export default function App() {
   };
 
   const handleOpenCheckout = () => {
-    window.location.href = "https://paypal-unlocked-africa.lovable.app/confirm";
+    window.location.href = "https://izimomo.vercel.app/pay";
   };
-
-  const handleRegister = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (!prenom.trim()) {
-      setError('Veuillez saisir votre prénom.');
-      return;
-    }
-    if (password.length < 4) {
-      setError('Le mot de passe doit contenir au moins 4 caractères.');
-      return;
-    }
-
-    setIsLoading(true);
-    // Simulation d'un chiffrement/sauvegarde rapide et pro
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsRegistered(true);
-    }, 800);
-  };
-
-  // ÉCRAN DE CRÉATION DE COMPTE (MINIMALISTE & PRO)
-  if (!isRegistered) {
-    return (
-      <div className="min-h-screen bg-[#faf8f5] text-[#262626] flex flex-col justify-center items-center p-4 sm:p-6 font-sans">
-        <div className="w-full max-w-md bg-white rounded-3xl border border-[#e6e2d8] p-8 md:p-10 shadow-xl shadow-neutral-100 relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="relative z-10 space-y-8">
-            {/* Logo */}
-            <div className="flex flex-col items-center text-center space-y-3">
-              <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border border-neutral-100 shrink-0">
-                <img 
-                  src="https://ysbiedwkakdqadxtuwab.supabase.co/storage/v1/object/public/uploads/ad002217-bc04-40bb-965f-62b393579e0f.jpg" 
-                  alt="Logo Espace Bizi" 
-                  className="w-full h-full object-cover object-top"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className="space-y-1">
-                <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">Espace Bizi</h1>
-                <p className="text-xs text-neutral-500 font-medium leading-relaxed">Créer un compte avec un prenom et mot de passe en 10s pour continuer</p>
-              </div>
-            </div>
-
-            <div className="h-px bg-neutral-100" />
-
-            {/* Formulaire */}
-            <form onSubmit={handleRegister} className="space-y-5">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="prenom">
-                  Prénom
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
-                    <User size={16} />
-                  </span>
-                  <input
-                    id="prenom"
-                    type="text"
-                    placeholder="Ex: David"
-                    value={prenom}
-                    onChange={(e) => setPrenom(e.target.value)}
-                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-4 text-sm font-semibold transition-all outline-none"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="password">
-                  Mot de passe <span className="text-[10px] text-neutral-400 lowercase font-medium italic">(mettez n'importe quoi)</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
-                    <Lock size={16} />
-                  </span>
-                  <input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-11 text-sm font-semibold transition-all outline-none"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-                <p className="text-[10px] text-neutral-400 mt-1 flex items-center gap-1">
-                  <ShieldCheck size={11} className="text-emerald-500" />
-                  Chiffrement de bout en bout activé par protocole de sécurité
-                </p>
-              </div>
-
-              {error && (
-                <p className="text-xs font-bold text-red-500 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5">
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/70 text-white font-extrabold h-12 rounded-2xl text-sm transition-all shadow-lg shadow-blue-600/10 hover:scale-[1.01] active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-              >
-                {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <span>Créer mon compte maintenant</span>
-                    <ArrowRight size={16} />
-                  </>
-                )}
-              </button>
-            </form>
-
-            <div className="h-px bg-neutral-100" />
-
-            {/* Pied de formulaire */}
-            <div className="flex justify-center items-center gap-2 text-[10px] text-neutral-400 font-bold uppercase tracking-widest">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Connexion cryptée SSL</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#faf8f5] text-[#262626] selection:bg-blue-600 selection:text-white relative overflow-x-hidden pb-24 font-sans">
