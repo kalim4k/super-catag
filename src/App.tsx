@@ -5,7 +5,8 @@ import {
   ArrowRight, 
   Check, 
   Sparkles,
-  Lock
+  Lock,
+  Copy
 } from 'lucide-react';
 import ProfileList from './components/ProfileList';
 
@@ -16,6 +17,7 @@ export default function App() {
     return localStorage.getItem('espace_bizi_unlocked') === 'true';
   });
   const [error, setError] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // Minuteur de 45 minutes en secondes
   const [timeLeft, setTimeLeft] = useState(2700);
@@ -77,6 +79,37 @@ export default function App() {
 
             {/* Formulaire */}
             <form onSubmit={handleVerifyCode} className="space-y-5">
+              <div className="bg-neutral-50/85 border border-[#e6e2d8] rounded-2xl p-4 flex flex-col items-center justify-center space-y-2 text-center">
+                <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">Votre code d'accès</span>
+                <div className="flex items-center gap-2">
+                  <code className="text-xl font-black text-blue-600 tracking-wider font-mono bg-blue-50/50 px-3.5 py-1.5 rounded-xl border border-blue-100">
+                    M2026
+                  </code>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText('M2026');
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    className="p-2 bg-white hover:bg-neutral-50 active:scale-95 text-neutral-600 hover:text-blue-600 border border-neutral-200 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+                    title="Copier le code"
+                  >
+                    {copied ? (
+                      <>
+                        <Check size={14} className="text-emerald-500 animate-bounce" />
+                        <span className="text-emerald-600 font-extrabold">Copié !</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={13} />
+                        <span>Copier</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="code">
                   Code d'accès
