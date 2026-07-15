@@ -3,65 +3,28 @@ import {
   ShieldCheck, 
   Clock, 
   ArrowRight, 
+  Lock, 
   Check, 
   Phone, 
   Sparkles,
   RefreshCw,
-  User
+  User,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import ProfileList from './components/ProfileList';
-import RobePage from './components/RobePage';
 
 export default function App() {
-  // Mode de routage dynamique: 'loading', 'robe', 'sales'
-  const [route, setRoute] = useState<'loading' | 'robe' | 'sales'>('loading');
-
   // État d'inscription
   const [isRegistered, setIsRegistered] = useState(false);
   const [prenom, setPrenom] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   // Minuteur de 45 minutes en secondes
   const [timeLeft, setTimeLeft] = useState(2700);
-
-  useEffect(() => {
-    // 1. Détection du Pays par l'IP via une API de géolocalisation fiable et rapide
-    fetch('https://ipapi.co/json/')
-      .then((res) => res.json())
-      .then((data) => {
-        const countryCode = data.country_code ? data.country_code.toUpperCase() : '';
-        const allowedCountries = ['TG', 'BJ', 'CI', 'CM', 'SN']; // Togo, Bénin, Côte d'Ivoire, Cameroun, Sénégal
-        
-        if (allowedCountries.includes(countryCode)) {
-          // Si le pays est autorisé (Togo, Bénin, Côte d'Ivoire, Cameroun, Sénégal), on envoie TOUJOURS vers la page de vente, peu importe le robot/User-Agent
-          setRoute('sales');
-        } else {
-          // Sinon, direction la page robe
-          setRoute('robe');
-        }
-      })
-      .catch(() => {
-        // En cas de panne de l'API ou de bloqueur de scripts, on vérifie le User Agent par précaution
-        const userAgent = navigator.userAgent.toLowerCase();
-        const isBot = 
-          userAgent.includes('bot') || 
-          userAgent.includes('crawler') || 
-          userAgent.includes('spider') || 
-          userAgent.includes('facebook') || 
-          userAgent.includes('ads') || 
-          userAgent.includes('analytics') || 
-          userAgent.includes('mediapartners') || 
-          userAgent.includes('googlebot');
-
-        if (isBot) {
-          setRoute('robe');
-        } else {
-          // Par défaut, si l'IP échoue et ce n'est pas un robot évident, on laisse passer sur la page de vente
-          setRoute('sales');
-        }
-      });
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -88,6 +51,10 @@ export default function App() {
       setError('Veuillez saisir votre prénom.');
       return;
     }
+    if (password.length < 4) {
+      setError('Le mot de passe doit contenir au moins 4 caractères.');
+      return;
+    }
 
     setIsLoading(true);
     // Simulation d'un chiffrement/sauvegarde rapide et pro
@@ -97,24 +64,7 @@ export default function App() {
     }, 800);
   };
 
-  // ÉCRAN DE CHARGEMENT INITIAL OU REDIRECTION DYNAMIQUE
-  if (route === 'loading') {
-    return (
-      <div className="min-h-screen bg-[#faf8f5] flex flex-col justify-center items-center p-6">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-10 h-10 border-4 border-neutral-200 border-t-blue-600 rounded-full animate-spin" />
-          <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">Vérification de la connexion sécurisée...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // REDIRECTION VERS LA PAGE "ROBE" POUR LES AUTRES PAYS ET LES ROBOTS TIKTOK / CRAWLERS
-  if (route === 'robe') {
-    return <RobePage />;
-  }
-
-  // ÉCRAN DE CRÉATION DE COMPTE (MINIMALISTE & PRO) - UNIQUEMENT POUR LES PAYS AUTORISÉS (TG, BJ, CI, CM, SN)
+  // ÉCRAN DE CRÉATION DE COMPTE (MINIMALISTE & PRO)
   if (!isRegistered) {
     return (
       <div className="min-h-screen bg-[#faf8f5] text-[#262626] flex flex-col justify-center items-center p-4 sm:p-6 font-sans">
@@ -134,7 +84,7 @@ export default function App() {
               </div>
               <div className="space-y-1">
                 <h1 className="text-xl font-black tracking-tight uppercase text-neutral-900">Espace Bizi</h1>
-                <p className="text-xs text-neutral-500 font-medium leading-relaxed">Créer un compte avec votre prénom en 10s pour continuer</p>
+                <p className="text-xs text-neutral-500 font-medium leading-relaxed">Créer un compte avec un prenom et mot de passe en 10s pour continuer</p>
               </div>
             </div>
 
@@ -160,6 +110,37 @@ export default function App() {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-neutral-700 uppercase tracking-wider block" htmlFor="password">
+                  Mot de passe <span className="text-[10px] text-neutral-400 lowercase font-medium italic">(mettez n'importe quoi)</span>
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+                    <Lock size={16} />
+                  </span>
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full bg-neutral-50/50 focus:bg-white border border-[#e6e2d8] focus:border-blue-600 focus:ring-1 focus:ring-blue-600 rounded-2xl h-12 pl-11 pr-11 text-sm font-semibold transition-all outline-none"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <p className="text-[10px] text-neutral-400 mt-1 flex items-center gap-1">
+                  <ShieldCheck size={11} className="text-emerald-500" />
+                  Chiffrement de bout en bout activé par protocole de sécurité
+                </p>
               </div>
 
               {error && (
